@@ -1,4 +1,3 @@
-#source: https://community.home-assistant.io/t/z2m-ts004f-tuya-4-gang-switch-blueprint/314233/26
 blueprint:
   name: ZHA - Tuya 4-Button Dimmer Switch
   description: Automate your Tuya 4-Button Dimmer using ZHA events.
@@ -12,6 +11,7 @@ blueprint:
           integration: zha
           manufacturer: _TZ3000_xabckq1v
           model: TS004F
+          multiple: false
     button_one_short_press:
       name: Single Press On
       description: Action to run on button upper-left single press
@@ -54,36 +54,30 @@ blueprint:
       default: []
       selector:
         action: {}
-#  source_url: 
+  source_url: https://github.com/radekl/homeassistant/blob/master/tuya-4switch-ts004f.yaml
 mode: restart
 max_exceeded: silent
 trigger:
-- platform: event
-  event_type: zha_event
-  event_data:
-    device_id: !input 'tuya_4button_dimmer_switch'
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input tuya_4button_dimmer_switch
 action:
-- variables:
-    command: '{{ trigger.event.data.command }}'
-    args:  '{{ trigger.event.data.args }}'
-- choose:
-  - conditions: '{{ command == ''on'' }}'
-    sequence: !input 'button_one_short_press'
-  - conditions: '{{ command == ''off'' }}'
-    sequence: !input 'button_two_short_press'
-  - conditions: '{{ command == ''step'' }}'
-    sequence:
-    - choose:
-      - conditions: '{{ args == [ 0, 51, 10] }}'
-        sequence: !input 'button_three_short_press'
-      - conditions: '{{ args == [ 1, 51, 10 ] }}'
-        sequence: !input 'button_four_short_press'
-  - conditions: '{{ command == ''move'' }}'
-    sequence:
-    - choose:
-      - conditions: '{{ args == [ 0, 51] }}'
-        sequence: !input 'button_three_long_press'
-      - conditions: '{{ args == [ 1, 51 ] }}'
-        sequence: !input 'button_four_long_press'
-  - conditions: '{{ command == ''stop'' }}'
-    sequence: !input 'button_dim_stop'
+  - variables:
+      command: "{{ trigger.event.data.command }}"
+      args: "{{ trigger.event.data.args }}"
+  - choose:
+      - conditions: "{{ command == 'on' }}"
+        sequence: !input button_one_short_press
+      - conditions: "{{ command == 'off' }}"
+        sequence: !input button_two_short_press
+      - conditions: "{{ command == 'step' and args == '[<StepMode.Up: 0>, 51, 10]' }}"
+        sequence: !input button_three_short_press
+      - conditions: "{{ command == 'step' and args == '[<StepMode.Down: 1>, 51, 10]' }}"
+        sequence: !input button_four_short_press
+      - conditions: "{{ command == 'move' and args == '[<MoveMode.Up: 0>, 51]' }}"
+        sequence: !input button_three_long_press
+      - conditions: "{{ command == 'move' and args == '[<MoveMode.Down: 1>, 51]' }}"
+        sequence: !input button_four_long_press
+      - conditions: "{{ command == 'stop' }}"
+        sequence: !input button_dim_stop
