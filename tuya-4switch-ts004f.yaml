@@ -1,6 +1,6 @@
 blueprint:
-  name: ZHA - Tuya 4-Button Dimmer Switch 0044
-  description: Automate your Tuya 4-Button Dimmer using ZHA events 0044.
+  name: ZHA - Tuya 4-Button Dimmer Switch 004f
+  description: Automate your Tuya 4-Button Dimmer using ZHA events 004f.
   domain: automation
   input:
     tuya_4button_dimmer_switch:
@@ -11,8 +11,8 @@ blueprint:
           multiple: false
           filter:
             - integration: zha
-              manufacturer: _TZ3000_wkai4ga5
-              model: TS0044
+              manufacturer: _TZ3000_xabckq1v
+              model: TS004F
     button_one_short_press:
       name: Single Press On
       description: Action to run on button upper-left single press
