@@ -99,51 +99,27 @@ action:
       button_id: "{{ trigger.event.data.endpoint_id }}"
       args: "{{ trigger.event.data.args }}"
   - choose:
-    - conditions: 
-        - "{{ command == 'remote_button_short_press' }}"
-        - "{{ button_id == 1 }}"
+    - conditions: "{{ command == 'remote_button_short_press' and button_id == 1 }}"
       sequence: !input button_short_press_one
-    - conditions: 
-        - "{{ command == 'remote_button_short_press' }}"
-        - "{{ button_id == 2 }}"
+    - conditions: "{{ command == 'remote_button_short_press' and button_id == 2 }}"
       sequence: !input button_short_press_two
-    - conditions: 
-        - "{{ command == 'remote_button_short_press' }}"
-        - "{{ button_id == 3 }}"
+    - conditions: "{{ command == 'remote_button_short_press' and button_id == 3 }}"
       sequence: !input button_short_press_three
-    - conditions:
-        - "{{ command == 'remote_button_short_press' }}"
-        - "{{ button_id == 4 }}"
+    - conditions: "{{ command == 'remote_button_short_press' and button_id == 4 }}"
       sequence: !input button_short_press_four
-    - conditions:
-        - "{{ command == 'remote_button_long_press' }}"
-        - "{{ button_id == 1 }}"
+    - conditions: "{{ command == 'remote_button_long_press' and button_id == 1}}"
       sequence: !input button_long_press_one
-    - conditions:
-        - "{{ command == 'remote_button_long_press' }}"
-        - "{{ button_id == 2 }}"
+    - conditions: "{{ command == 'remote_button_long_press' and button_id == 2}}"
       sequence: !input button_long_press_two
-    - conditions:
-        - "{{ command == 'remote_button_long_press' }}"
-        - "{{ button_id == 3 }}"
+    - conditions: "{{ command == 'remote_button_long_press' and button_id == 3}}"
       sequence: !input button_long_press_three
-    - conditions:
-        - "{{ command == 'remote_button_long_press' }}"
-        - "{{ button_id == 4 }}"
+    - conditions: "{{ command == 'remote_button_long_press' and button_id == 4}}"
       sequence: !input button_long_press_four
-    - conditions:
-        - "{{ command == 'remote_button_double_press' }}"
-        - "{{ button_id == 1 }}"
+    - conditions: "{{ command == 'remote_button_double_press' and button_id == 1}}"
       sequence: !input button_double_press_one
-    - conditions:
-        - "{{ command == 'remote_button_double_press' }}"
-        - "{{ button_id == 2 }}"
+    - conditions: "{{ command == 'remote_button_double_press' and button_id == 2}}"
       sequence: !input button_double_press_two
-    - conditions:
-        - "{{ command == 'remote_button_double_press' }}"
-        - "{{ button_id == 3 }}"
+    - conditions: "{{ command == 'remote_button_double_press' and button_id == 3}}"
       sequence: !input button_double_press_three
-    - conditions:
-        - "{{ command == 'remote_button_double_press' }}"
-        - "{{ button_id == 4 }}"
+    - conditions: "{{ command == 'remote_button_double_press' and button_id == 4}}"
       sequence: !input button_double_press_four
