@@ -8,10 +8,15 @@ blueprint:
       description: Tuya 4-Button Dimmer Switch to use
       selector:
         device:
-          integration: zha
-          manufacturer: _TZ3000_xabckq1v
-          model: TS004F
-          multiple: false
+          filter:
+            - integration: zha
+              manufacturer: _TZ3000_xabckq1v
+              model: TS004F
+              multiple: false
+            - integration: zha
+              manufacturer: _TZ3000_wkai4ga5
+              model: TS0044
+              multiple: false
     button_one_short_press:
       name: Single Press On
       description: Action to run on button upper-left single press
