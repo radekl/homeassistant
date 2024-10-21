@@ -5,7 +5,7 @@ blueprint:
   input:
     tuya_4button_dimmer_switch:
       name: Tuya 4-Button Dimmer Switch
-      description: Tuya 4-Button Dimmer Switch to use
+      description: Tuya 4-Button Dimmer Switch to use (TS0044)
       selector:
         device:
           multiple: false
@@ -13,52 +13,79 @@ blueprint:
             - integration: zha
               manufacturer: _TZ3000_xabckq1v
               model: TS004F
-            - integration: zha
-              manufacturer: _TZ3000_wkai4ga5
-              model: TS0044
-    button_one_short_press:
-      name: Single Press On
-      description: Action to run on button upper-left single press
+    button_short_press_one:
+      name: Short Press 1
+      description: Action to run on button upper-left short press
       default: []
       selector:
         action: {}
-    button_two_short_press:
-      name: Single Press Off
-      description: Action to run on button lower-left single press
+    button_short_press_two:
+      name: Short Press 2
+      description: Action to run on button upper-right short press
       default: []
       selector:
         action: {}
-    button_three_short_press:
-      name: Single Press Dim-up
-      description: Action to run on button upper-right single press
+    button_short_press_three:
+      name: Short Press 3
+      description: Action to run on button lower-left short press
       default: []
       selector:
         action: {}
-    button_four_short_press:
-      name: Single Press Dim-down
-      description: Action to run on button lower-right single press
+    button_short_press_four:
+      name: Short Press 4
+      description: Action to run on button lower-right short press
       default: []
       selector:
         action: {}
-    button_three_long_press:
-      name: Long Press Dim-up
+    button_long_press_one:
+      name: Long Press 1
+      description: Action to run on button upper-left long press
+      default: []
+      selector:
+        action: {}
+    button_long_press_two:
+      name: Long Press 2
       description: Action to run on button upper-right long press
       default: []
       selector:
         action: {}
-    button_four_long_press:
-      name: Long Press Dim-down
+    button_long_press_three:
+      name: Long Press 3
+      description: Action to run on button lower-left long press
+      default: []
+      selector:
+        action: {}
+    button_long_press_four:
+      name: Long Press 4
       description: Action to run on button lower-right long press
       default: []
       selector:
         action: {}
-    button_dim_stop:
-      name: Long Press Dim-down
-      description: Action to run when end/stop long press
+    button_double_press_one:
+      name: Double Press 1
+      description: Action to run on button upper-left double press
       default: []
       selector:
         action: {}
-  source_url: https://github.com/radekl/homeassistant/blob/master/tuya-4switch-ts004f.yaml
+    button_double_press_two:
+      name: Double Press 2
+      description: Action to run on button upper-right double press
+      default: []
+      selector:
+        action: {}
+    button_double_press_three:
+      name: Double Press 3
+      description: Action to run on button lower-left double press
+      default: []
+      selector:
+        action: {}
+    button_double_press_four:
+      name: Double Press 4
+      description: Action to run on button lower-right double press
+      default: []
+      selector:
+        action: {}
+  source_url: https://github.com/radekl/homeassistant/blob/master/tuya-4switch-ts0044.yaml
 mode: restart
 max_exceeded: silent
 trigger:
@@ -69,19 +96,30 @@ trigger:
 action:
   - variables:
       command: "{{ trigger.event.data.command }}"
+      button_id: "{{ trigger.event.data.endpoint_id }}"
       args: "{{ trigger.event.data.args }}"
   - choose:
-      - conditions: "{{ command == 'on' }}"
-        sequence: !input button_one_short_press
-      - conditions: "{{ command == 'off' }}"
-        sequence: !input button_two_short_press
-      - conditions: "{{ command == 'step' and args == '[<StepMode.Up: 0>, 51, 10]' }}"
-        sequence: !input button_three_short_press
-      - conditions: "{{ command == 'step' and args == '[<StepMode.Down: 1>, 51, 10]' }}"
-        sequence: !input button_four_short_press
-      - conditions: "{{ command == 'move' and args == '[<MoveMode.Up: 0>, 51]' }}"
-        sequence: !input button_three_long_press
-      - conditions: "{{ command == 'move' and args == '[<MoveMode.Down: 1>, 51]' }}"
-        sequence: !input button_four_long_press
-      - conditions: "{{ command == 'stop' }}"
-        sequence: !input button_dim_stop
+      - conditions: "{{ command == 'remote_button_short_press' && button_id == 1 }}"
+        sequence: !input button_short_press_one
+      - conditions: "{{ command == 'remote_button_short_press' && button_id == 2 }}"
+        sequence: !input button_short_press_two
+      - conditions: "{{ command == 'remote_button_short_press' && button_id == 3 }}"
+        sequence: !input button_short_press_three
+      - conditions: "{{ command == 'remote_button_short_press' && button_id == 4 }}"
+        sequence: !input button_short_press_four
+      - conditions: "{{ command == 'remote_button_long_press' && button_id == 1}}"
+        sequence: !input button_long_press_one
+      - conditions: "{{ command == 'remote_button_long_press' && button_id == 2}}"
+        sequence: !input button_long_press_two
+      - conditions: "{{ command == 'remote_button_long_press' && button_id == 3}}"
+        sequence: !input button_long_press_three
+      - conditions: "{{ command == 'remote_button_long_press' && button_id == 4}}"
+        sequence: !input button_long_press_four
+      - conditions: "{{ command == 'remote_button_double_press' && button_id == 1}}"
+        sequence: !input button_double_press_one
+      - conditions: "{{ command == 'remote_button_double_press' && button_id == 2}}"
+        sequence: !input button_double_press_two
+      - conditions: "{{ command == 'remote_button_double_press' && button_id == 3}}"
+        sequence: !input button_double_press_three
+      - conditions: "{{ command == 'remote_button_double_press' && button_id == 4}}"
+        sequence: !input button_double_press_four
