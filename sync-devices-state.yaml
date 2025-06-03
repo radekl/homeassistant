@@ -10,14 +10,16 @@ blueprint:
       name: Entity 1
       selector:
         entity:
-          - light
-          - switch
+          domain:
+            - light
+            - switch
     entity_2:
       name: Entity 2
       selector:
         entity:
-          - light
-          - switch
+          domain:
+            - light
+            - switch
 
 mode: parallel
 
