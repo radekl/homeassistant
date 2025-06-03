@@ -10,10 +10,14 @@ blueprint:
       name: Entity 1
       selector:
         entity:
+          - light
+          - switch
     entity_2:
       name: Entity 2
       selector:
         entity:
+          - light
+          - switch
 
 mode: parallel
 
@@ -23,14 +27,16 @@ trigger:
   - platform: state
     entity_id: !input entity_2
 
-condition:
-  - condition: template
-    value_template: '{{ states(entity_1) != states(entity_2) }}'
+conditions:
+  - "{{ states(!input entity_1) != states(!input entity_2) }}"
+  - "{{ trigger.to_state.state in ['on', 'off'] }}"
 
 action:
   - service: "homeassistant.turn_{{ trigger.to_state.state }}"
     data:
       entity_id: >
+        {% set entity_1 = !input entity_1 %}
+        {% set entity_2 = !input entity_2 %}
         {% if trigger.from_state.entity_id == entity_1 %}
           {{ entity_2 }}
         {% else %}
