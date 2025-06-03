@@ -30,8 +30,10 @@ trigger:
     entity_id: !input entity_2
 
 conditions:
-  - "{{ states(!input entity_1) != states(!input entity_2) }}"
-  - "{{ trigger.to_state.state in ['on', 'off'] }}"
+  - condition: template
+    value_template: "{{ states(!input entity_1) != states(!input entity_2) }}"
+  - condition: template
+    value_template: "{{ trigger.to_state.state in ['on', 'off'] }}"
 
 action:
   - service: "homeassistant.turn_{{ trigger.to_state.state }}"
