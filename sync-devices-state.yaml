@@ -1,29 +1,29 @@
 blueprint:
-  name: Sync Two Switches
+  name: Sync Two Lights
   description: >
-    Synchronizes the on/off state between two switch entities.
-    If one changes to 'on' or 'off', the other follows.
+    Synchronizes the on/off state between two light entities.
+    If one changes state to 'on' or 'off', the other one follows.
     Ignores 'unavailable' or 'unknown' states.
   domain: automation
   input:
-    switch_1:
-      name: Switch 1
+    light_1:
+      name: Light 1
       selector:
         entity:
-          domain: switch
-    switch_2:
-      name: Switch 2
+          domain: light
+    light_2:
+      name: Light 2
       selector:
         entity:
-          domain: switch
+          domain: light
 
 mode: parallel
 
 trigger:
   - platform: state
-    entity_id: !input switch_1
+    entity_id: !input light_1
   - platform: state
-    entity_id: !input switch_2
+    entity_id: !input light_2
 
 condition: []
 
@@ -36,10 +36,8 @@ action:
           - service: "homeassistant.turn_{{ trigger.to_state.state }}"
             data:
               entity_id: >
-                {% set switch_1 = (switch_1 or 'switch.undefined') %}
-                {% set switch_2 = (switch_2 or 'switch.undefined') %}
-                {% if trigger.entity_id == switch_1 %}
-                  {{ switch_2 }}
+                {% if trigger.entity_id == light_1 %}
+                  {{ light_2 }}
                 {% else %}
-                  {{ switch_1 }}
+                  {{ light_1 }}
                 {% endif %}
